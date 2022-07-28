@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        body {
+            margin: 0;
+            padding-bottom: 3rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        #form {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.25rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            height: 3rem;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
+
+        #input {
+            border: none;
+            padding: 0 1rem;
+            flex-grow: 1;
+            border-radius: 2rem;
+            margin: 0.25rem;
+        }
+
+        #input:focus {
+            outline: none;
+        }
+
+        #form>button {
+            background: #333;
+            border: none;
+            padding: 0 1rem;
+            margin: 0.25rem;
+            border-radius: 3px;
+            outline: none;
+            color: #fff;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages>li {
+            padding: 0.5rem 1rem;
+        }
+
+        #messages>li:nth-child(odd) {
+            background: #efefef;
+        }
+    </style>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+
+    
+    <!-- This example requires Tailwind CSS v2.0+ -->
+    <div>
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Last 30 days</h3>
+        <dl
+            class="mt-5 grid grid-cols-1 rounded-lg bg-white overflow-hidden shadow divide-y divide-gray-200 md:grid-cols-3 md:divide-y-0 md:divide-x">
+    
+            <%  symbols.forEach( function (symbol){ %>
+            
+            <!-- starts -->
+            <div class="px-4 py-5 sm:p-6">
+                <dt class="text-base font-normal text-gray-900" id="<%=symbol%>-compName" >Total Subscribers</dt>
+                <dd class="mt-1 flex justify-between items-baseline md:block lg:flex">
+                    <div class="flex items-baseline text-2xl font-semibold text-indigo-600" id="<%=symbol%>-price">
+                        71,897
+                        <span class="ml-2 text-sm font-medium text-gray-500"> from 70,946 </span>
+                    </div>
+    
+                    <div id="<%=symbol%>-change"
+                        class="inline-flex items-baseline px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800 md:mt-2 lg:mt-0">
+                        <!-- Heroicon name: solid/arrow-sm-up -->
+                        <svg class="-ml-1 mr-0.5 flex-shrink-0 self-center h-5 w-5 text-green-500"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span class="sr-only"> Increased by </span>
+                        12%
+                    </div>
+                </dd>
+            </div>
+
+            <% }); %>
+            <!-- end -->
+        </dl>
+    </div>
+
+
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+        integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+        crossorigin="anonymous"></script>
+    <script>
+        var socket = io();
+
+        var element = document.getElementById('liveQuote');
+
+        socket.on('Live_Quotes', (msg) => {
+            // const d = JSON.parse(msg.substr(14))[0];
+            const qs = JSON.parse(msg.substr(14));
+            // element.innerText = msg.substr(0, 14) + " price:" + d.regularMarketPrice + "  symbol:" + d.symbol;
+            qs.forEach(d => {
+                console.log(d);
+                let e = d;
+                document.getElementById(e.symbol+"-compName").innerText = d.longName;
+                document.getElementById(e.symbol +"-price").innerText = d.regularMarketPrice;
+                document.getElementById(e.symbol +"-change").innerText = d.regularMarketChangePercent;
+            });
+
+
+            
+        });
+
+    </script>
+</body>
+
+</html>

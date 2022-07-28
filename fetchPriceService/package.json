@@ -1,0 +1,12 @@
+{
+  "name": "fetchpriceservice",
+  "version": "1.0.0",
+  "description": "It will fetch prices from remote server and stream to kafka",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "MIT"
+}

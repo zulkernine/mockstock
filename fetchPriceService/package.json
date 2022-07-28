@@ -1,6 +1,7 @@
 {
   "name": "fetchpriceservice",
   "version": "1.0.0",
+  "type": "module",
   "description": "It will fetch prices from remote server and stream to kafka",
   "main": "index.js",
   "scripts": {
@@ -8,5 +9,10 @@
     "start": "node index.js"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "kafkajs": "^2.1.0",
+    "yahoo-finance2": "^2.3.4"
+  }
 }
